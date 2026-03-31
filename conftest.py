@@ -6,7 +6,8 @@ from data.users import Users
 
 @pytest.fixture(scope="session")
 def browser(playwright):
-    browser = playwright.chromium.launch(headless=False, slow_mo=500)
+    headless = os.getenv("CI", "false") == "true"
+    browser = playwright.chromium.launch(headless=headless, slow_mo=0 if headless else 500)
     yield browser
     browser.close()
 
